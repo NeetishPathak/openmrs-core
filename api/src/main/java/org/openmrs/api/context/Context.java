@@ -127,7 +127,7 @@ import org.springframework.aop.Advisor;
  */
 public class Context {
 
-	private static final com.sun.istack.internal.logging.Logger log = LoggerFactory.getLogger(Context.class);
+	private static final Logger log = LoggerFactory.getLogger(Context.class);
 
 	// Global resources
 	private static ContextDAO contextDAO;
