@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -53,6 +54,7 @@ import org.openmrs.util.OpenmrsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractRefreshableApplicationContext;
+
 
 /**
  * Utility methods for working and manipulating modules
@@ -706,6 +708,13 @@ public class ModuleUtil {
 					URL base = http.getURL();
 					String loc = http.getHeaderField("Location");
 					URL target = null;
+					
+					//a check on the valid Location inputs (sort of white-listing - toy example)
+					Set<String> validLocs = new HashSet<String>(Arrays.asList("validLoc1","validLoc2"));
+					if(!validLocs.contains(loc)) {
+						throw new IOException("The location is Invalid");	
+					}
+					
 					if (loc != null) {
 						target = new URL(base, loc);
 					}
