@@ -712,7 +712,7 @@ public class ModuleUtil {
 					//a check on the valid Location inputs (sort of white-listing - toy example)
 					Set<String> validLocs = new HashSet<String>(Arrays.asList("validLoc1","validLoc2"));
 					if(!validLocs.contains(loc)) {
-						throw new IOException("The location is Invalid");	
+						throw new IllegalArgumentException("The location is Invalid");	
 					}
 					
 					if (loc != null) {
