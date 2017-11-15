@@ -12,6 +12,8 @@ package org.openmrs.serialization;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Date;
 
 import org.apache.commons.lang.SerializationUtils;
@@ -21,6 +23,7 @@ import org.openmrs.ConceptClass;
 import org.openmrs.ConceptDatatype;
 import org.openmrs.Person;
 import org.openmrs.User;
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 
 public class JavaSerializationTest {
 	
@@ -45,6 +48,25 @@ public class JavaSerializationTest {
         originalPerson.setVoidReason("test");
 
         byte[] serialized = SerializationUtils.serialize(originalPerson);
+        
+        	// We use LookAheadObjectInputStream instead of InputStream  
+        // using one of its implementations like Apache Commons IO 
+		ValidatingObjectInputStream ois;
+		try {
+			ois = new ValidatingObjectInputStream(new ByteArrayInputStream(serialized));
+			ois.accept("Person");
+			
+			try {
+				ois.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
         Person copyPerson = (Person) SerializationUtils.deserialize(serialized);
 
         assertThat(copyPerson.getGender(), is(originalPerson.getGender()));
